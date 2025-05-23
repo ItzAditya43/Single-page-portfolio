@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aditya's Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- Sidebar remains unchanged -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="Images\Sidebar-logo.png" alt="logo">
+      <h2>Hi! I am Aditya</h2>
+    </div>
+    <ul class="links">
+        <h4>Some Links</h4>
+        <li>
+          <a href="https://leetcode.com/u/Adi0026/">
+            <span class="material-symbols-outlined">LeetCode</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/ItzAditya43">
+            <span class="material-symbols-outlined">Github</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/adityapandey10/">
+            <span class="material-symbols-outlined">LinkedIn</span>
+          </a>
+        </li>
+      </ul>
+    <button id="dark-mode-toggle">Toggle Dark Mode</button>
+</aside>
+
+  <!-- Background Video -->
+  <video autoplay loop muted>
+    <source src="Background custom/Genshin Impact - Xiao [Live Wallpaper].mp4" type="video/mp4">
+  </video>
+
+  <header>
+    <h1>My Web Portfolio</h1>
+  </header>
+
+  <div class="content-container">
+
+    <!-- About Section (improved content) -->
+    <section id="profile">
+      <h2 class="winged-title">
+        <img src="Heading icon gif/chibi1.gif" class="chibi-image"> About Me <img src="Heading icon gif/chibi2.gif" class="chibi-image">
+      </h2>
+      <img src="Images/Img.jpg" alt="Profile Picture">
+      <div class="bio-container">
+        <p>I'm <span class="highlight">Aditya Pandey</span>, a 2nd-year <span class="highlight">Computer Science & Design</span> student at RGIPT.</p>
+        <p>I enjoy crafting immersive UIs and developing intelligent systems with <span class="highlight">MERN, Python, and ML</span>.</p>
+        <p>Currently building an <span class="highlight">AI-powered code editor</span> and learning from game-inspired web aesthetics like Genshin Impact.</p>
+        <p>I love <span class="highlight">anime, football, and building cool stuff</span> with code.</p>
+        <p class="cta">🚀 Let's innovate something together!</p>
+      </div>
+    </section>
+
+    <!-- Skills Section (visual style) -->
+    <section id="skills">
+      <h2 class="winged-title">
+        <img src="Heading icon gif/chibi5.gif" class="chibi-image"> My Tech Stack <img src="Heading icon gif/chibi6.gif" class="chibi-image">
+      </h2>
+      <div class="skill-grid">
+        <div class="skill-item">HTML</div>
+        <div class="skill-item">CSS</div>
+        <div class="skill-item">JavaScript</div>
+        <div class="skill-item">React</div>
+        <div class="skill-item">Node.js</div>
+        <div class="skill-item">Express</div>
+        <div class="skill-item">MongoDB</div>
+        <div class="skill-item">Python</div>
+        <div class="skill-item">Pandas</div>
+        <div class="skill-item">Scikit-learn</div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+      <h2 class="winged-title">
+        <img src="Heading icon gif/chibi3.gif" class="chibi-image"> Projects <img src="Heading icon gif/chibi4.gif" class="chibi-image">
+      </h2>
+      <div class="project-grid">
+        <div class="project-card">
+          <h3>🎧 Music Player</h3>
+          <p>A floating animated music player with dynamic background and playlist handling.</p>
+          <p><b>Tech:</b> HTML, CSS, JS</p>
+          <a href="#" target="_blank">View Demo</a> | <a href="#">GitHub</a>
+        </div>
+        <div class="project-card">
+          <h3>📊 ML Model: Sentiment Classifier</h3>
+          <p>Classifies product reviews using TF-IDF and logistic regression.</p>
+          <p><b>Tech:</b> Python, Pandas, Sklearn</p>
+          <a href="#" target="_blank">Notebook</a> | <a href="#">GitHub</a>
+        </div>
+        <div class="project-card">
+          <h3>💻 AI Code Editor (WIP)</h3>
+          <p>Building a smart code editor with ghost-pairing and bug simulation mode.</p>
+          <p><b>Tech:</b> React, Express, GPT API (planned)</p>
+          <a href="#">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- What I'm Learning Section -->
+    <section id="learning">
+      <h2 class="winged-title">
+        What I'm Learning & Building Now
+      </h2>
+      <ul>
+        <li>⚡ MERN stack for full-stack web development</li>
+        <li>🧠 Machine learning concepts & applied projects</li>
+        <li>🎨 Game-inspired UI/UX using animations and transitions</li>
+        <li>🚀 AI Code Editor – creative + intelligent dev tool</li>
+      </ul>
+    </section>
+
+    <!-- Quote section retained -->
+    <section>
+      <div class="quote-container">
+        <p id="quote-text">Click the button for a random quote!</p>
+        <button id="quote-btn">🔄</button>
+      </div>
+    </section>
+
+    <!-- Music Player -->
+    <div class="music-player">
+      <audio id="audio"></audio>
+      <button id="mute-btn" class="mute-btn">🔊</button>
+      <div class="track-info">
+        <span id="track-title">Loading...</span>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
