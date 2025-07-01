@@ -41,7 +41,7 @@ function initQuotes() {
   });
 }
 
-// Music Player System with Drag functionality
+// Enhanced Music Player with Touch Support
 function initMusicPlayer() {
   const audio = document.getElementById("audio");
   const muteBtn = document.getElementById("mute-btn");
@@ -60,9 +60,10 @@ function initMusicPlayer() {
   let fadeTimeout;
   audio.volume = 0.5;
 
-  // Drag functionality
+  // Enhanced drag functionality with touch support
   let isDragging = false;
   let dragOffset = { x: 0, y: 0 };
+  let currentPosition = { x: 10, y: 10 }; // Default position
 
   loadTrack(currentIndex);
 
@@ -83,11 +84,12 @@ function initMusicPlayer() {
   audio.addEventListener("ended", () => {
     currentIndex = (currentIndex + 1) % playlist.length;
     loadTrack(currentIndex);
-    audio.play().catch(e => console.log("Playback error:", e));
+    audio.play().catch(e => console.log("Playbook error:", e));
   });
 
   muteBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); // Prevent drag when clicking button
+    e.stopPropagation();
+    e.preventDefault();
     if (audio.paused) {
       audio.play().catch(e => console.log("Playback error:", e));
     }
@@ -103,64 +105,121 @@ function initMusicPlayer() {
     clearTimeout(fadeTimeout);
     fadeTimeout = setTimeout(() => {
       trackInfo.classList.add("faded");
-    }, 3000); // Fade out after 3 seconds
+    }, 3000);
   }
 
-  // Mouse enter on music player shows track info
+  // Mouse/Touch enter events
   musicPlayer.addEventListener("mouseenter", () => {
     trackInfo.classList.remove("faded");
     clearTimeout(fadeTimeout);
   });
 
-  // Mouse leave on music player starts fade timer again
   musicPlayer.addEventListener("mouseleave", () => {
     fadeTimeout = setTimeout(() => {
       trackInfo.classList.add("faded");
-    }, 1000); // Shorter delay when mouse leaves
+    }, 1000);
   });
 
-  // Drag functionality
-  musicPlayer.addEventListener("mousedown", (e) => {
+  // Helper functions for drag functionality
+  function getEventPosition(e) {
+    return {
+      x: e.type.includes('touch') ? e.touches[0].clientX : e.clientX,
+      y: e.type.includes('touch') ? e.touches[0].clientY : e.clientY
+    };
+  }
+
+  function constrainPosition(x, y) {
+    const rect = musicPlayer.getBoundingClientRect();
+    const maxX = window.innerWidth - rect.width;
+    const maxY = window.innerHeight - rect.height;
+    
+    return {
+      x: Math.max(0, Math.min(x, maxX)),
+      y: Math.max(0, Math.min(y, maxY))
+    };
+  }
+
+  function updatePlayerPosition(x, y) {
+    const constrained = constrainPosition(x, y);
+    currentPosition = constrained;
+    musicPlayer.style.left = constrained.x + "px";
+    musicPlayer.style.top = constrained.y + "px";
+    musicPlayer.style.bottom = "auto";
+    musicPlayer.style.right = "auto";
+  }
+
+  function startDrag(e) {
     // Don't start drag if clicking on the mute button
     if (e.target === muteBtn) return;
     
+    e.preventDefault();
     isDragging = true;
     musicPlayer.classList.add("dragging");
     
+    const eventPos = getEventPosition(e);
     const rect = musicPlayer.getBoundingClientRect();
-    dragOffset.x = e.clientX - rect.left;
-    dragOffset.y = e.clientY - rect.top;
-    
-    e.preventDefault();
-  });
+    dragOffset.x = eventPos.x - rect.left;
+    dragOffset.y = eventPos.y - rect.top;
+  }
 
-  document.addEventListener("mousemove", (e) => {
+  function handleDrag(e) {
     if (!isDragging) return;
     
-    const x = e.clientX - dragOffset.x;
-    const y = e.clientY - dragOffset.y;
+    e.preventDefault();
+    const eventPos = getEventPosition(e);
+    const x = eventPos.x - dragOffset.x;
+    const y = eventPos.y - dragOffset.y;
     
-    // Keep player within window bounds
-    const maxX = window.innerWidth - musicPlayer.offsetWidth;
-    const maxY = window.innerHeight - musicPlayer.offsetHeight;
-    
-    const constrainedX = Math.max(0, Math.min(x, maxX));
-    const constrainedY = Math.max(0, Math.min(y, maxY));
-    
-    musicPlayer.style.left = constrainedX + "px";
-    musicPlayer.style.top = constrainedY + "px";
-    musicPlayer.style.bottom = "auto"; // Remove bottom positioning
-  });
+    updatePlayerPosition(x, y);
+  }
 
-  document.addEventListener("mouseup", () => {
+  function endDrag(e) {
     if (isDragging) {
+      e.preventDefault();
       isDragging = false;
       musicPlayer.classList.remove("dragging");
     }
-  });
+  }
 
-  // Prevent context menu on music player
+  // Mouse events
+  musicPlayer.addEventListener("mousedown", startDrag);
+  document.addEventListener("mousemove", handleDrag);
+  document.addEventListener("mouseup", endDrag);
+
+  // Touch events for mobile
+  musicPlayer.addEventListener("touchstart", startDrag, { passive: false });
+  document.addEventListener("touchmove", handleDrag, { passive: false });
+  document.addEventListener("touchend", endDrag, { passive: false });
+
+  // Prevent context menu
   musicPlayer.addEventListener("contextmenu", (e) => {
     e.preventDefault();
+  });
+
+  // Handle window resize to keep player in bounds
+  window.addEventListener("resize", () => {
+    updatePlayerPosition(currentPosition.x, currentPosition.y);
+  });
+
+  // Initialize position based on screen size
+  function initializePosition() {
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+    
+    if (isMobile) {
+      updatePlayerPosition(10, window.innerHeight - 130); // Bottom left for mobile
+    } else if (isTablet) {
+      updatePlayerPosition(10, window.innerHeight - 140); // Bottom left for tablet
+    } else {
+      updatePlayerPosition(10, window.innerHeight - 160); // Bottom left for desktop
+    }
+  }
+
+  // Initialize position on load
+  initializePosition();
+
+  // Reinitialize position on orientation change (mobile)
+  window.addEventListener("orientationchange", () => {
+    setTimeout(initializePosition, 100); // Small delay to allow orientation change to complete
   });
 }
