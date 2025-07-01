@@ -11,3 +11,10 @@ Video Background, Music in website, Dark Mode, Sidebar, CSS Designing, Js implim
 March 2025:
 Added a proper music player at left bottom with bg added. Could have added it much better way but might do that later + its much better than the just a previous button system.
 Music player. (Feature added)
+
+May 2025:
+Some minor issues resloved.
+
+July 2025:
+Inprovised it entirely (or mostly) changed its outlook, and updated its content. Music player made movable!
+Hope you like it!
